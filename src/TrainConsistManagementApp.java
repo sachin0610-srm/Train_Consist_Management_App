@@ -1,26 +1,42 @@
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+
+class Bogie {
+    String name;
+    int capacity;
+
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
+    @Override
+    public String toString() {
+        return name + " -> " + capacity;
+    }
+}
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        // Using LinkedHashMap to ensure the output matches the document's order exactly
-        Map<String, Integer> bogieCapacityMap = new LinkedHashMap<>();
+        System.out.println("==========================================");
+        System.out.println("UC7 - Sort Bogies by Capacity (Comparator)");
+        System.out.println("==========================================");
+        System.out.println();
 
-        bogieCapacityMap.put("First Class", 24);
-        bogieCapacityMap.put("Cargo", 120);
-        bogieCapacityMap.put("Sleeper", 72);
-        bogieCapacityMap.put("AC Chair", 56);
+        List<Bogie> bogies = new ArrayList<>();
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("General", 90));
 
-        System.out.println("========================================");
-        System.out.println("UC6 - Map Bogie to Capacity (HashMap)");
-        System.out.println("========================================\n");
+        System.out.println("Before Sorting:");
+        for (Bogie b : bogies) System.out.println(b);
 
-        System.out.println("Bogie Capacity Details:");
+        // Sorting logic using Comparator
+        bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        for (Map.Entry<String, Integer> entry : bogieCapacityMap.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        System.out.println("\nAfter Sorting by Capacity:");
+        for (Bogie b : bogies) System.out.println(b);
 
-        System.out.println("\nUC6 bogie-capacity mapping completed...");
+        System.out.println("\nUC7 sorting completed...");
     }
 }
