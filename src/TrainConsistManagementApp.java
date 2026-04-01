@@ -1,29 +1,38 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
+        // Initializing the LinkedList to maintain the physical order of the train
+        LinkedList<String> bogieList = new LinkedList<>();
 
-        Set<String> bogieIds = new HashSet<>();
+        System.out.println("======================================");
+        System.out.println("UC4 - Maintain Ordered Bogie Consist");
+        System.out.println("======================================");
 
-        System.out.println("===============================");
-        System.out.println("UC3 - Track Unique Bogie IDs");
-        System.out.println("===============================");
-        System.out.println();
+        // 1. Initial Train Consist
+        bogieList.add("Engine");
+        bogieList.add("Sleeper");
+        bogieList.add("AC");
+        bogieList.add("Cargo");
+        bogieList.add("Guard");
 
-        bogieIds.add("BG101");
-        bogieIds.add("BG102");
-        bogieIds.add("BG103");
-        bogieIds.add("BG104");
-        bogieIds.add("BG101");
+        System.out.println("\nInitial Train Consist:");
+        System.out.println(bogieList);
 
-        System.out.println("Bogie IDs After Insertion:");
-        System.out.println(bogieIds);
-        System.out.println();
+        // 2. Inserting 'Pantry Car' at position 2
+        // In Java LinkedList, index 2 is the 3rd position
+        bogieList.add(2, "Pantry Car");
 
-        System.out.println("Note:");
-        System.out.println("Duplicates are automatically ignored by HashSet.");
-        System.out.println();
-        System.out.println("UC3 uniqueness validation completed...");
+        System.out.println("\nAfter Inserting 'Pantry Car' at position 2:");
+        System.out.println(bogieList);
+
+        // 3. Removing First and Last Bogie
+        bogieList.removeFirst(); // Removes 'Engine'
+        bogieList.removeLast();  // Removes 'Guard'
+
+        System.out.println("\nAfter Removing First and Last Bogie:");
+        System.out.println(bogieList);
+
+        System.out.println("\nUC4 ordered consist operations completed...");
     }
 }
