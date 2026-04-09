@@ -1,31 +1,44 @@
-import java.util.Scanner;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TrainValidator {
+class Bogie {
+    String type;
+    String cargo;
+
+    Bogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
+    }
+}
+
+public class SafetyCheckApp {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+
+        List<Bogie> train = new ArrayList<>();
+        train.add(new Bogie("Cylindrical", "Petroleum"));
+        train.add(new Bogie("Open", "Coal"));
+        train.add(new Bogie("Box", "Grain"));
+        train.add(new Bogie("Cylindrical", "Coal")); // This triggers the safety violation
 
         System.out.println("==========================================");
-        System.out.println("UC11 - Validate Train ID and Cargo Code");
-        System.out.println("==========================================");
-        System.out.println();
+        System.out.println("UC12 - Safety Compliance Check for Goods Bogies");
+        System.out.println("==========================================\n");
 
-        System.out.print("Enter Train ID (Format: TRN-1234): ");
-        String trainId = scanner.nextLine();
+        System.out.println("Goods Bogies in Train:");
+        train.forEach(b -> System.out.println(b.type + " -> " + b.cargo));
 
-        System.out.print("Enter Cargo Code (Format: PET-AB): ");
-        String cargoCode = scanner.nextLine();
+        boolean isSafe = train.stream().allMatch(b ->
+                !b.type.equalsIgnoreCase("Cylindrical") || b.cargo.equalsIgnoreCase("Petroleum")
+        );
 
-        boolean isTrainIdValid = Pattern.matches("TRN-\\d{4}", trainId);
-        boolean isCargoCodeValid = Pattern.matches("PET-[A-Z]{2}", cargoCode);
+        System.out.println("\nSafety Compliance Status: " + isSafe);
 
-        System.out.println();
-        System.out.println("Validation Results:");
-        System.out.println("Train ID Valid: " + isTrainIdValid);
-        System.out.println("Cargo Code Valid: " + isCargoCodeValid);
-        System.out.println();
-        System.out.println("UC11 validation completed...");
+        if (!isSafe) {
+            System.out.println("Train formation is NOT SAFE.");
+        } else {
+            System.out.println("Train formation is SAFE.");
+        }
 
-        scanner.close();
+        System.out.println("\nUC12 safety validation completed...");
     }
 }
