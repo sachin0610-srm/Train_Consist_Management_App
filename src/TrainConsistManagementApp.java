@@ -1,59 +1,51 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 class Bogie {
-    private String name;
+    private String id;
     private int capacity;
 
-    public Bogie(String name, int capacity) {
-        this.name = name;
+    public Bogie(String id, int capacity) {
+        this.id = id;
         this.capacity = capacity;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getCapacity() {
         return capacity;
     }
-
-    @Override
-    public String toString() {
-        return name + " -> " + capacity;
-    }
 }
 
-public class TrainConsistManagementApp {
+public class PerformanceComparisonApp {
     public static void main(String[] args) {
-        System.out.println("================================");
-        System.out.println("UC9 - Group Bogies by Type");
-        System.out.println("================================\n");
 
-        // Step 1: User creates a list of bogies
-        List<Bogie> bogies = Arrays.asList(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC Chair", 56),
-                new Bogie("First Class", 24),
-                new Bogie("Sleeper", 70),
-                new Bogie("AC Chair", 60)
-        );
+        List<Bogie> bogies = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            bogies.add(new Bogie("B" + i, (int) (Math.random() * 100)));
+        }
 
-        System.out.println("All Bogies:");
-        bogies.forEach(System.out::println);
+        long startTimeLoop = System.nanoTime();
+        List<Bogie> filteredWithLoop = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.getCapacity() > 60) {
+                filteredWithLoop.add(b);
+            }
+        }
+        long durationLoop = System.nanoTime() - startTimeLoop;
 
-        // Steps 2, 3, 4: Convert to stream, apply groupingBy(), and store in Map
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(Bogie::getName));
+        long startTimeStream = System.nanoTime();
+        List<Bogie> filteredWithStream = bogies.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+        long durationStream = System.nanoTime() - startTimeStream;
 
-        // Step 5: Display grouped result
-        System.out.println("\nGrouped Bogies:\n");
-        groupedBogies.forEach((type, list) -> {
-            System.out.println("Bogie Type: " + type);
-            list.forEach(b -> System.out.println("  Capacity -> " + b.getCapacity()));
-            System.out.println();
-        });
-
-        System.out.println("UC9 grouping completed...");
+        System.out.println("=======================================");
+        System.out.println("UC13 - Performance Comparison (Loops vs Streams)");
+        System.out.println("=======================================");
+        System.out.println();
+        System.out.println("Loop Execution Time (ns): " + durationLoop);
+        System.out.println("Stream Execution Time (ns): " + durationStream);
+        System.out.println();
+        System.out.println("UC13 performance benchmarking completed...");
     }
 }
