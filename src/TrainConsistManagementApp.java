@@ -1,51 +1,24 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-class Bogie {
-    private String id;
-    private int capacity;
-
-    public Bogie(String id, int capacity) {
-        this.id = id;
-        this.capacity = capacity;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-}
-
-public class PerformanceComparisonApp {
+public class TrainConsistApp {
     public static void main(String[] args) {
+        System.out.println("==========================================");
+        System.out.println("UC14 - Handle Invalid Bogie Capacity");
+        System.out.println("==========================================\n");
 
-        List<Bogie> bogies = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
-            bogies.add(new Bogie("B" + i, (int) (Math.random() * 100)));
+        try {
+            // Valid Case
+            String type1 = "Sleeper";
+            int capacity1 = 72;
+            if (capacity1 <= 0) throw new InvalidCapacityException("Capacity must be greater than zero");
+            System.out.println("Created Bogie: " + type1 + " -> " + capacity1);
+
+            // Invalid Case
+            int capacity2 = -10; // Or 0
+            if (capacity2 <= 0) throw new InvalidCapacityException("Capacity must be greater than zero");
+
+        } catch (InvalidCapacityException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        long startTimeLoop = System.nanoTime();
-        List<Bogie> filteredWithLoop = new ArrayList<>();
-        for (Bogie b : bogies) {
-            if (b.getCapacity() > 60) {
-                filteredWithLoop.add(b);
-            }
-        }
-        long durationLoop = System.nanoTime() - startTimeLoop;
-
-        long startTimeStream = System.nanoTime();
-        List<Bogie> filteredWithStream = bogies.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-        long durationStream = System.nanoTime() - startTimeStream;
-
-        System.out.println("=======================================");
-        System.out.println("UC13 - Performance Comparison (Loops vs Streams)");
-        System.out.println("=======================================");
-        System.out.println();
-        System.out.println("Loop Execution Time (ns): " + durationLoop);
-        System.out.println("Stream Execution Time (ns): " + durationStream);
-        System.out.println();
-        System.out.println("UC13 performance benchmarking completed...");
+        System.out.println("\nUC14 exception handling completed...");
     }
 }
